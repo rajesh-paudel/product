@@ -29,7 +29,6 @@ export default function InquiryForm({ productId }) {
     try {
       const res = await fetch(`${apiUrl}/inquiries/`, {
         method: "POST",
-
         body: formData,
       });
 
@@ -50,60 +49,57 @@ export default function InquiryForm({ productId }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="  flex flex-col gap-4 bg-gray-200  rounded-2xl p-6 shadow-sm w-full max-w-4xl mx-auto"
-    >
-      <h2 className="text-2xl font-semibold text-center text-gray-700">
-        Inquiry for this product
-      </h2>
+    <div className="max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-xl space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm">
+          logo
+        </div>
+        <div>
+          <h2 className="font-semibold text-lg text-gray-800">
+            Request a Quote
+          </h2>
+          <p className="text-sm text-gray-500">
+            Get detailed pricing & availability
+          </p>
+        </div>
+      </div>
 
-      <label className="flex flex-col gap-1">
-        <span className="font-medium">Tell us your Name *</span>
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
           name="name"
+          placeholder="Your Name"
           value={form.name}
           onChange={handleChange}
-          className="border p-2 rounded outline-none border-none bg-gray-300 text-gray-600 placeholder:text-gray-600"
-          placeholder="Enter you name"
-          required
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
-      </label>
-
-      <label className="flex flex-col gap-1">
-        <span className="font-medium">Email *</span>
         <input
           type="email"
           name="email"
+          placeholder="Your Email"
           value={form.email}
           onChange={handleChange}
-          className="border p-2 rounded outline-none border-none bg-gray-300 text-gray-600 placeholder:text-gray-600"
-          placeholder="Enter you Email"
-          required
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
-      </label>
 
-      <label className="flex flex-col gap-1">
-        <span className="font-medium">Message *</span>
         <textarea
-          placeholder="Your message here..."
           name="message"
+          placeholder="Message / Product Inquiry"
           value={form.message}
           onChange={handleChange}
-          rows={6}
-          className="border p-2 rounded outline-none border-none bg-gray-300 text-gray-600 placeholder:text-gray-600"
-          required
+          rows={5}
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
-      </label>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700 transition"
-      >
-        {loading ? "Sending..." : "Submit"}
-      </button>
-    </form>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-emerald-600 text-white font-medium py-2 rounded-lg hover:bg-emerald-700 transition-all"
+        >
+          {loading ? "Sending" : "Send Inquiry"}
+        </button>
+      </form>
+    </div>
   );
 }

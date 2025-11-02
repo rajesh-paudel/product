@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Trash2, Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ProductDetails from "@/components/ProductDetailsCard";
 const myLoader = ({ src }) => src;
 export default function ProductPage() {
   const params = useParams();
@@ -60,44 +61,8 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto flex flex-col gap-16">
-      <div className="flex flex-col md:flex-row justify-center gap-12">
-        {/* Image Section */}
-        <div className="relative w-full md:w-1/2 aspect-square shadow-2xl">
-          <Image
-            loader={myLoader}
-            src={product.image || "/placeholder.png"}
-            alt={product.name}
-            className="object-contain rounded-lg shadow"
-            fill
-            unoptimized
-          />
-        </div>
-
-        {/* Product Details */}
-        <div className="flex flex-col w-full md:w-1/2 gap-1">
-          <div className="flex justify-between">
-            <h1 className="text-2xl leading-5 font-bold">{product.name}</h1>
-            <div className="flex gap-2">
-              <Trash2
-                onClick={() => setOpen(true)}
-                className="w-5 h-5 text-red-500 cursor-pointer"
-              />
-              <Link href={`/products/${id}/edit`}>
-                <Edit className="w-5 h-5 text-blue-500 cursor-pointer" />
-              </Link>
-            </div>
-          </div>
-          <p className="text-gray-700">{product.description}</p>
-          <p className="text-xl  text-gray-700">${product.price}</p>
-          {product.availability ? (
-            <p className="text-green-600 font-medium">Available</p>
-          ) : (
-            <p className="text-red-600 font-medium">Not available</p>
-          )}
-        </div>
-      </div>
-
+    <div className=" max-w-7xl w-full  flex mx-auto  gap-2 py-10">
+      <ProductDetails product={product} />
       {/* Inquiry Form */}
       <InquiryForm productId={product.id} />
 

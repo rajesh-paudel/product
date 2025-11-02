@@ -28,41 +28,42 @@ export default function CategoryPage() {
     return <div className="p-8 text-center">No products</div>;
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-10 text-center ">
-        {category?.name}
-      </h1>
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Breadcrumb */}
+      <nav className="text-gray-500 mb-4 text-sm">
+        Categories /{" "}
+        <span className="text-gray-900 font-semibold">{category.name}</span>
+      </nav>
 
-      <h2 className="text-2xl font-semibold mb-2">Products</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {category?.products?.map((product) => (
-          <Link
-            key={product.id}
-            href={`/products/${product.id}`}
-            className="w-full p-1 hover:bg-gray-100 shadow-2xl flex flex-col rounded-xl hover:scale-105 transition duration-300"
-          >
-            <div className="relative w-full aspect-square mb-4 flex items-center justify-center  bg-gray-200 rounded-lg">
-              {product.image ? (
-                <Image
-                  loader={myLoader}
-                  src={product.image}
-                  alt={product.name}
-                  className="object-cover rounded-lg"
-                  fill
-                  unoptimized
+      {/* Title and Description */}
+      <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
+      <p className="text-gray-600 mb-6">Description</p>
+
+      {/* Featured Products */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Featured Products</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          {category.products?.map((prod, idx) => (
+            <Link
+              key={idx}
+              href={`/products/${prod.id}`}
+              className="flex flex-col cursor-pointer border border-gray-200 p-2 gap-2 hover:bg-gray-100"
+            >
+              {prod.image ? (
+                <img
+                  src={prod.image}
+                  alt="img"
+                  className="w-full h-36 rounded-md object-cover mb-2"
                 />
               ) : (
-                <span className="text-gray-500 font-medium">No Image</span>
+                <span className="bg-gray-300">No image</span>
               )}
-            </div>
-
-            <div className=" w-full p-2">
-              <h3 className="font-semibold">{product.name}</h3>
-              <p className="text-gray-700">${product.price}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+              <span className="text-sm font-medium">{prod.name}</span>
+              <span className="text-gray-500 text-xs">{prod.price}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
