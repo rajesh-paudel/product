@@ -1,0 +1,6 @@
+/.env
+/media/
+*.py[cod]
+*$py.class
+/env/
+venv
