@@ -1,0 +1,28 @@
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { Toaster } from "sonner";
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata = {
+  title: "Product showcase application",
+  description: "lets view products and inquiry about them",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={` bg-white text-black min-h-screen `}>
+        {children}
+        <Toaster position="top-center" richColors />
+      </body>
+    </html>
+  );
+}
