@@ -1,17 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
+
 const myLoader = ({ src }) => src;
 
 export default function ProductDetails({ product }) {
   return (
-    <div className="max-w-3xl w-full mx-auto">
+    <div className="w-full">
       {/* Image Container */}
-      <div className=" bg-gray-200 relative rounded-lg shadow mb-6 flex justify-center items-center overflow-hidden w-full h-80">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 relative rounded-2xl shadow-lg mb-8 flex justify-center items-center overflow-hidden w-full h-96 border border-gray-100">
         {product.image ? (
           <Image
             loader={myLoader}
             src={product.image}
-            alt="img"
-            className="object-contain rounded-lg"
+            alt={product.name}
+            className="object-contain rounded-2xl p-6"
             fill
             unoptimized
           />
@@ -21,22 +23,44 @@ export default function ProductDetails({ product }) {
       </div>
 
       {/* Product Info Container */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-        <p className="text-green-600 text-lg font-semibold mb-1">
-          Starting from ${product.price}
-        </p>
-        <p className="text-sm mb-2">
-          <span className="font-medium">Availability:</span>
-          {product?.availability ? (
-            <span className="text-green-600 ml-1 font-semibold">In Stock</span>
-          ) : (
-            <span className="text-red-600 ml-1 font-semibold">
-              Out Of Stock
-            </span>
-          )}
-        </p>
-        <p className="text-gray-700 mb-2">{product.description}</p>
+      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">{product.name}</h2>
+            <p className="text-teal-600 text-2xl font-bold mb-4">
+              Starting from ${product.price}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="font-semibold text-gray-900">Availability:</span>
+            {product?.availability ? (
+              <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                In Stock
+              </span>
+            ) : (
+              <span className="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
+                Out Of Stock
+              </span>
+            )}
+          </div>
+
+          <div className="pt-4 border-t border-gray-200">
+            <h3 className="font-bold text-lg mb-3 text-gray-900">Description</h3>
+            <p className="text-gray-700 leading-relaxed">{product.description}</p>
+          </div>
+
+          {/* Back Button */}
+          <div className="pt-4">
+            <Link
+              href="/categories"
+              className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-semibold transition-colors duration-300"
+            >
+              <span>←</span>
+              <span>Back to Categories</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { MessageCircle } from "lucide-react";
 
 export default function InquiryForm({ productId }) {
   const [form, setForm] = useState({
@@ -41,7 +42,7 @@ export default function InquiryForm({ productId }) {
         toast.error("Failed to send inquiry.");
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
       toast.error("Something went wrong.");
     } finally {
       setLoading(false);
@@ -49,57 +50,55 @@ export default function InquiryForm({ productId }) {
   };
 
   return (
-    <div className="max-w-sm mx-auto h-1/2 p-6 bg-white rounded-2xl shadow-xl space-y-4">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm">
-          logo
+    <div className="sticky top-24">
+      <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-full flex items-center justify-center">
+            <MessageCircle className="w-6 h-6 text-teal-600" />
+          </div>
+          <div>
+            <h2 className="font-bold text-xl text-gray-900">Request a Quote</h2>
+            <p className="text-sm text-gray-600">Get detailed pricing & availability</p>
+          </div>
         </div>
-        <div>
-          <h2 className="font-semibold text-lg text-gray-800">
-            Request a Quote
-          </h2>
-          <p className="text-sm text-gray-500">
-            Get detailed pricing & availability
-          </p>
-        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+          />
+
+          <textarea
+            name="message"
+            placeholder="Message / Product Inquiry"
+            value={form.message}
+            onChange={handleChange}
+            rows={5}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold py-3 rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Sending..." : "Send Inquiry"}
+          </button>
+        </form>
       </div>
-
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={form.name}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-        />
-
-        <textarea
-          name="message"
-          placeholder="Message / Product Inquiry"
-          value={form.message}
-          onChange={handleChange}
-          rows={5}
-          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-emerald-600 text-white font-medium py-2 rounded-lg hover:bg-emerald-700 transition-all"
-        >
-          {loading ? "Sending" : "Send Inquiry"}
-        </button>
-      </form>
     </div>
   );
 }

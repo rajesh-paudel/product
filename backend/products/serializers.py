@@ -25,5 +25,6 @@ class InquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inquiry
         fields = ['id', 'name', 'email', 'product', 'message', 'created_at']
-        required=False,  
-        allow_null=True   
+        extra_kwargs = {
+            'product': {'required': False, 'allow_null': True}
+        }

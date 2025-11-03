@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, filters
 from .models import Category, Product, Inquiry
 from .serializers import CategorySerializer, ProductSerializer, InquirySerializer
 
@@ -6,6 +6,7 @@ from .serializers import CategorySerializer, ProductSerializer, InquirySerialize
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.filter(parent=None)  # only main categories
     serializer_class = CategorySerializer
+    ordering = ['name']
 
 
 # Create new category
@@ -29,11 +30,13 @@ class CategoryDeleteView(generics.DestroyAPIView):
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    ordering = ['name']
 
 # Product detail
 class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'id'
 
 # Create inquiry
 class InquiryCreateView(generics.CreateAPIView):
@@ -49,9 +52,10 @@ class ProductCreateView(generics.CreateAPIView):
 class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer 
+    lookup_field = 'id'
 
 #update product
 class ProductUpdateView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'id'    
+    lookup_field = 'id'

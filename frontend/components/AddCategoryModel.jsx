@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { X } from "lucide-react";
 
 export default function AddCategory({ setIsCategoryModelOpen }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -57,76 +58,91 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-gray-200 rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <h2 className="text-xl font-bold mb-4">Add New Category</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label className="font-medium">Name *</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Category name"
-              value={newCategory.name}
-              onChange={handleChange}
-              className="border p-2 rounded"
-              required
-            />
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-gray-100 relative">
+        {/* Close Button */}
+        <button
+          onClick={() => setIsCategoryModelOpen(false)}
+          className="absolute top-4 right-4 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors duration-300"
+        >
+          <X className="w-5 h-5" />
+        </button>
 
-          <div className="flex flex-col gap-1">
-            <label className="font-medium">Description</label>
-            <textarea
-              name="description"
-              placeholder="description"
-              value={newCategory.description}
-              onChange={handleChange}
-              rows={3}
-              className="border p-2 rounded"
-            />
-          </div>
+        <div className="p-8">
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Add New Category</h2>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Category Name */}
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold text-gray-900">
+                Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Category name"
+                value={newCategory.name}
+                onChange={handleChange}
+                className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+                required
+              />
+            </div>
 
-          {/* Image Upload with Preview */}
+            {/* Description */}
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold text-gray-900">
+                Description
+              </label>
+              <textarea
+                name="description"
+                placeholder="Category description"
+                value={newCategory.description}
+                onChange={handleChange}
+                rows={3}
+                className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
+              />
+            </div>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-4">
-              <label className="font-medium">Image</label>
+            {/* Image Upload with Preview */}
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold text-gray-900">Image</label>
               <input
                 type="file"
                 name="image"
                 onChange={handleChange}
                 accept="image/*"
-                className="border p-1 rounded cursor-pointer text-sm"
+                className="border border-gray-300 px-4 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
               />
+
+              {preview && (
+                <div className="mt-2 w-full h-48 border-2 border-gray-300 rounded-lg overflow-hidden">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
             </div>
 
-            {preview && (
-              <div className="mt-2 w-24 h-24 border rounded overflow-hidden">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={() => setIsCategoryModelOpen(false)}
-              className="px-4 py-2 rounded border hover:bg-gray-100"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded bg-teal-600 text-white hover:bg-teal-700"
-            >
-              Add
-            </button>
-          </div>
-        </form>
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setIsCategoryModelOpen(false)}
+                className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300 font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
+              >
+                Add Category
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
