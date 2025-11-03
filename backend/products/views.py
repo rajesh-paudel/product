@@ -7,6 +7,24 @@ class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.filter(parent=None)  # only main categories
     serializer_class = CategorySerializer
 
+
+# Create new category
+class CategoryCreateView(generics.CreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+# Update category
+class CategoryUpdateView(generics.UpdateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    lookup_field = 'id'
+
+# Delete category
+class CategoryDeleteView(generics.DestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    lookup_field = 'id'    
+
 # List all products
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
@@ -27,10 +45,12 @@ class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+#delete product
 class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer 
 
+#update product
 class ProductUpdateView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer

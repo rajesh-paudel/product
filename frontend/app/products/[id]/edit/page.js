@@ -1,10 +1,13 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-export default function AddProductPage() {
+import { useRouter, useParams } from "next/navigation";
+
+export default function EditProductPage() {
   const router = useRouter();
+  const { id } = useParams();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -19,28 +22,47 @@ export default function AddProductPage() {
   const [categories, setCategories] = useState([]);
   const fileInputRef = useRef(null);
 
+  // Fetch categories
+  useEffect(() => {
+    fetch(`${apiUrl}/categories/`)
+      .then((res) => res.json())
+      .then(setCategories)
+      .catch((err) => console.log(err));
+  }, []);
+
+  // Fetch product details
+  useEffect(() => {
+    if (!id) return;
+    fetch(`${apiUrl}/products/${id}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        setForm({
+          name: data.name,
+          price: data.price,
+          category: data.category,
+          availability: data.availability,
+          meta_title: data.meta_title || "",
+          meta_description: data.meta_description || "",
+          description: data.description,
+        });
+        if (data.image) setPreview(data.image);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setSelectedFile(file);
     setPreview(URL.createObjectURL(file));
-  };
-
-  // Fetch categories for dropdown
-  useEffect(() => {
-    fetch(`${apiUrl}/categories/`)
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setForm({ ...form, [name]: checked });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -50,52 +72,39 @@ export default function AddProductPage() {
     formData.append("name", form.name);
     formData.append("price", parseFloat(form.price));
     formData.append("category", Number(form.category));
-    formData.append("availability", form.availability ? true : false);
+    formData.append("availability", form.availability);
     formData.append("description", form.description);
 
     if (form.meta_title) formData.append("meta_title", form.meta_title);
     if (form.meta_description)
       formData.append("meta_description", form.meta_description);
-    if (selectedFile) {
-      formData.append("image", selectedFile);
-    }
+    if (selectedFile) formData.append("image", selectedFile);
 
     try {
-      const res = await fetch(`${apiUrl}/products/add/`, {
-        method: "POST",
+      const res = await fetch(`${apiUrl}/products/${id}/update/`, {
+        method: "PATCH",
         body: formData,
       });
-
       if (res.ok) {
-        toast.success("Product added successfully!");
-        setForm({
-          name: "",
-          price: "",
-          category: "",
-          availability: true,
-          meta_title: "",
-          meta_description: "",
-          description: "",
-          image: null,
-        });
-        setPreview(null);
+        toast.success("Product updated successfully!");
         router.push("/admin");
       } else {
-        toast.error("Failed to add product.");
+        toast.error("Failed to update product.");
       }
     } catch (err) {
       console.log(err);
-      toast.error("Error adding product.");
+      toast.error("Error updating product.");
     }
   };
 
   return (
-    <div className="p-8 my-20 max-w-5xl mx-auto shadow-2xl border border-gray-300 rounded-md ">
-      <h1 className="text-3xl font-medium mb-4">Add New Product</h1>
+    <div className="p-8 my-20 max-w-5xl mx-auto shadow-2xl border border-gray-300 rounded-md">
+      <h1 className="text-3xl font-medium mb-4">Update Product</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="flex gap-8 ">
-          <div className="w-1/2 flex-col  space-y-5 ">
+        <div className="flex gap-8">
+          {/* Left Column */}
+          <div className="w-1/2 flex-col space-y-5">
             {/* Product Name */}
             <label className="flex flex-col gap-1">
               <span className="font-medium">Product Name</span>
@@ -165,10 +174,12 @@ export default function AddProductPage() {
               />
             </label>
           </div>
+
+          {/* Right Column */}
           <div className="flex-1 flex-col space-y-5">
             {/* Meta Title */}
             <label className="flex flex-col gap-1">
-              <span className="font-medium">Meta Title(Optional)</span>
+              <span className="font-medium">Meta Title (Optional)</span>
               <input
                 type="text"
                 name="meta_title"
@@ -180,7 +191,7 @@ export default function AddProductPage() {
 
             {/* Meta Description */}
             <label className="flex flex-col gap-1">
-              <span className="font-medium">Meta Description (optional)</span>
+              <span className="font-medium">Meta Description (Optional)</span>
               <textarea
                 name="meta_description"
                 value={form.meta_description}
@@ -190,10 +201,9 @@ export default function AddProductPage() {
               />
             </label>
 
-            {/* image section  */}
-
+            {/* Image */}
             <label className="flex flex-col gap-1">
-              <span className="font-medium">Product Image (optional)</span>
+              <span className="font-medium">Product Image (Optional)</span>
               <input
                 type="file"
                 name="image"
@@ -202,13 +212,15 @@ export default function AddProductPage() {
                 className="hidden"
                 accept="image/*"
               />
-              <div className="border-dashed border-2 border-gray-400 w-full h-40 rounded cursor-pointer flex items-center justify-center text-gray-500">
+              <div
+                className="border-dashed border-2 border-gray-400 w-full h-40 rounded cursor-pointer flex items-center justify-center text-gray-500"
+                onClick={() => fileInputRef.current.click()}
+              >
                 {preview ? (
                   <img
                     src={preview}
                     alt="Preview"
-                    className="w-full h-full object-contain
-                  "
+                    className="w-full h-full object-contain"
                   />
                 ) : (
                   <span>Click to browse image</span>
@@ -217,12 +229,13 @@ export default function AddProductPage() {
             </label>
           </div>
         </div>
-        {/* Submit */}
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-gray-700 text-white p-2 rounded mt-2 self-end cursor-pointer hover:bg-gray-900"
         >
-          Publish Product
+          Update Product
         </button>
       </form>
     </div>

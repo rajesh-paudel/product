@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,6 +24,8 @@ export default function RootLayout({ children }) {
       <body className={` bg-white text-black min-h-screen `}>
         <Navbar />
         <main className="pt-16">{children}</main>
+        <Footer />
+        <Toaster richColors position="top-center"></Toaster>
       </body>
     </html>
   );

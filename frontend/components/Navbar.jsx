@@ -22,11 +22,14 @@ export default function Navbar() {
           <Link href="#products" className="hover:text-blue-400">
             Products
           </Link>
-          <Link href="#category" className="hover:text-blue-400">
+          <Link href="/categories" className="hover:text-blue-400">
             Category
           </Link>
           <Link href="#contact" className="hover:text-blue-400">
             Contact
+          </Link>
+          <Link href="/admin" className="hover:text-blue-400">
+            Admin
           </Link>
         </div>
       </div>

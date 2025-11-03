@@ -49,7 +49,7 @@ export default function InquiryForm({ productId }) {
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-xl space-y-4">
+    <div className="max-w-sm mx-auto h-1/2 p-6 bg-white rounded-2xl shadow-xl space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm">

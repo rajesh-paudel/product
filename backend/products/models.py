@@ -2,6 +2,8 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=100)  
+    description = models.TextField(blank=True, null=True)  
+    image = models.ImageField(upload_to="category_images/", blank=True, null=True) 
     parent = models.ForeignKey(
         'self',               
         null=True,          
@@ -34,7 +36,7 @@ class Product(models.Model):
 class Inquiry(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)  
 

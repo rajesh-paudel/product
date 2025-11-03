@@ -24,11 +24,9 @@ export default function CategoryPage() {
   if (!category) {
     return <div className="p-8 text-center">Loading...</div>;
   }
-  if (!category?.products || category?.products?.length == 0)
-    return <div className="p-8 text-center">No products</div>;
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="min-h-screen p-6 max-w-6xl mx-auto">
       {/* Breadcrumb */}
       <nav className="text-gray-500 mb-4 text-sm">
         Categories /{" "}
@@ -37,32 +35,43 @@ export default function CategoryPage() {
 
       {/* Title and Description */}
       <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
-      <p className="text-gray-600 mb-6">Description</p>
+      <p className="text-gray-600 mb-6">{category.description}</p>
 
       {/* Featured Products */}
       <section>
-        <h2 className="text-xl font-semibold mb-4">Featured Products</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          {category.products?.map((prod, idx) => (
-            <Link
-              key={idx}
-              href={`/products/${prod.id}`}
-              className="flex flex-col cursor-pointer border border-gray-200 p-2 gap-2 hover:bg-gray-100"
-            >
-              {prod.image ? (
-                <img
-                  src={prod.image}
-                  alt="img"
-                  className="w-full h-36 rounded-md object-cover mb-2"
-                />
-              ) : (
-                <span className="bg-gray-300">No image</span>
-              )}
-              <span className="text-sm font-medium">{prod.name}</span>
-              <span className="text-gray-500 text-xs">{prod.price}</span>
-            </Link>
-          ))}
-        </div>
+        <h2 className="text-xl font-semibold mb-8">Featured Products</h2>
+        {category.products.length > 0 ? (
+          <div className=" w-full  mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {category.products?.map((p) => (
+              <Link
+                key={p.id}
+                href={`/products/${p.id}`}
+                className="bg-white flex flex-col shadow-md rounded-lg overflow-hidden group hover:shadow-xl transition"
+              >
+                {p?.image ? (
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="h-42 w-full object-cover"
+                  />
+                ) : (
+                  <div className="h-42 w-full  text-gray-600 bg-gray-200 flex items-center justify-center">
+                    No image
+                  </div>
+                )}
+                <div className="p-2">
+                  <h2 className="font-semibold text-lg">{p.name}</h2>
+                  <p className=" text-ellipsis  truncate">{p.description}</p>
+                  <p className="mt-1 font-medium">${p.price}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-500 text-lg flex items-center justify-center">
+            <span>No prodcuts available</span>
+          </div>
+        )}
       </section>
     </div>
   );

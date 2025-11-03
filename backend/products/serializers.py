@@ -14,7 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'subcategories', 'products']
+        fields = ['id', 'name', 'subcategories', 'products','description','image']
 
     def get_subcategories(self, obj):
         qs = obj.subcategories.all()
@@ -25,3 +25,5 @@ class InquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inquiry
         fields = ['id', 'name', 'email', 'product', 'message', 'created_at']
+        required=False,  
+        allow_null=True   
