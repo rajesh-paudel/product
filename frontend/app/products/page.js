@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
+  console.log(products);
   useEffect(() => {
     fetch(`${apiUrl}/products/`)
       .then((res) => res.json())
@@ -33,10 +33,18 @@ export default function ProductsPage() {
       .catch((err) => console.log(err));
   }, []);
 
-  const filteredProducts = selectedCategory
-    ? products.filter((p) => p.category === parseInt(selectedCategory))
-    : products;
+  const getCategoryAndSubIds = (catId) => {
+    const cat = categories.find((c) => c.id === parseInt(catId));
+    if (!cat) return [];
+    return [cat.id, ...(cat.subcategories?.map((sub) => sub.id) || [])];
+  };
 
+  const filteredProducts = selectedCategory
+    ? products.filter((p) => {
+        const allowedIds = getCategoryAndSubIds(selectedCategory);
+        return allowedIds.includes(p.category);
+      })
+    : products;
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -79,13 +87,14 @@ export default function ProductsPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id.toString())}
-                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+                className={`px-2 py-2 rounded-full font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                   selectedCategory === cat.id.toString()
                     ? "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg"
                     : "bg-white border-2 border-gray-200 text-gray-700 hover:border-teal-600 hover:text-teal-600"
                 }`}
               >
-                {cat.name}
+                <img src={cat.image} className="w-8 h-8 rounded-full"></img>
+                <span>{cat.name}</span>
               </button>
             ))}
           </div>
@@ -159,4 +168,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-

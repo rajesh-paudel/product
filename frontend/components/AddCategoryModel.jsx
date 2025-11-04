@@ -1,16 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 
 export default function AddCategory({ setIsCategoryModelOpen }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [categories, setCategories] = useState([]);
   const [preview, setPreview] = useState(null);
   const [newCategory, setNewCategory] = useState({
     name: "",
     description: "",
     image: null,
+    parent: "", //optional
   });
+
+  useEffect(() => {
+    // Fetch existing categories
+    fetch(`${apiUrl}/categories/`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch((err) => console.error(err));
+  }, []);
 
   // Handle input change
   const handleChange = (e) => {
@@ -36,6 +46,8 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
     formData.append("name", newCategory.name);
     formData.append("description", newCategory.description);
     if (newCategory.image) formData.append("image", newCategory.image);
+    if (newCategory.parent)
+      formData.append("parent", parseInt(newCategory.parent, 10));
 
     try {
       const res = await fetch(`${apiUrl}/categories/add/`, {
@@ -58,7 +70,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-gray-100 relative">
         {/* Close Button */}
         <button
@@ -69,8 +81,10 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
         </button>
 
         <div className="p-8">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Add New Category</h2>
-          
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">
+            Add New Category
+          </h2>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Category Name */}
             <div className="flex flex-col gap-2">
@@ -90,9 +104,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
 
             {/* Description */}
             <div className="flex flex-col gap-2">
-              <label className="font-semibold text-gray-900">
-                Description
-              </label>
+              <label className="font-semibold text-gray-900">Description</label>
               <textarea
                 name="description"
                 placeholder="Category description"
@@ -101,6 +113,30 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
                 rows={3}
                 className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
               />
+            </div>
+
+            {/* Parent Category */}
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold text-gray-900">
+                Parent Category (optional)
+              </label>
+              <select
+                name="parent"
+                value={newCategory.parent}
+                onChange={handleChange}
+                className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+              >
+                <option value="">None (Top-level category)</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500">
+                Selecting a parent makes this category a{" "}
+                <span className="font-semibold">subcategory</span>.
+              </p>
             </div>
 
             {/* Image Upload with Preview */}

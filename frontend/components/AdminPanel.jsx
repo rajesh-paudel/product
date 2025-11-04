@@ -63,6 +63,11 @@ export default function AdminPanel() {
     }
   };
 
+  const allCategories = categories.flatMap((c) => [
+    { id: c.id, name: c.name },
+    ...(c.subcategories?.map((sub) => ({ id: sub.id, name: sub.name })) || []),
+  ]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -70,9 +75,11 @@ export default function AdminPanel() {
         <div className="mb-12 space-y-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-900">Admin Panel</h1>
-            <p className="text-gray-600 mt-1">Manage your products and categories</p>
+            <p className="text-gray-600 mt-1">
+              Manage your products and categories
+            </p>
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
             <button
@@ -144,7 +151,9 @@ export default function AdminPanel() {
                                 className="w-full h-full object-contain"
                               />
                             ) : (
-                              <span className="text-gray-400 text-xs">No image</span>
+                              <span className="text-gray-400 text-xs">
+                                No image
+                              </span>
                             )}
                           </div>
                           <div>
@@ -159,11 +168,14 @@ export default function AdminPanel() {
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-block px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-semibold">
-                          {categories.find((c) => c.id === p.category)?.name || "Uncategorized"}
+                          {allCategories.find((c) => c.id === p.category)
+                            ?.name || "Uncategorized"}
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="font-bold text-teal-600">${p.price}</span>
+                        <span className="font-bold text-teal-600">
+                          ${p.price}
+                        </span>
                       </td>
                       <td className="px-6 py-4">
                         {p.availability ? (
@@ -179,7 +191,9 @@ export default function AdminPanel() {
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-2">
                           <button
-                            onClick={() => router.push(`/admin/products/${p.id}/edit`)}
+                            onClick={() =>
+                              router.push(`/admin/products/${p.id}/edit`)
+                            }
                             className="p-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors duration-300"
                             title="Edit"
                           >
@@ -203,7 +217,9 @@ export default function AdminPanel() {
         ) : (
           <div className="text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-100">
             <p className="text-lg text-gray-500">
-              {search ? "No products found matching your search" : "No products available"}
+              {search
+                ? "No products found matching your search"
+                : "No products available"}
             </p>
           </div>
         )}
@@ -212,9 +228,12 @@ export default function AdminPanel() {
         {deleteModel && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl mx-4 border border-gray-100">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900">Are you sure?</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-900">
+                Are you sure?
+              </h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Do you really want to delete this product? This action cannot be undone.
+                Do you really want to delete this product? This action cannot be
+                undone.
               </p>
               <div className="flex justify-end gap-3">
                 <button

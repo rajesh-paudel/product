@@ -11,7 +11,7 @@ export default function CategoryPage() {
   const { id } = useParams();
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -26,7 +26,15 @@ export default function CategoryPage() {
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [id]);
+  console.log(category);
 
+  const displayedProducts = selectedSubCategory
+    ? selectedSubCategory.products || []
+    : [
+        ...(category?.products || []),
+        ...(category?.subcategories || []).flatMap((sub) => sub.products || []),
+      ];
+  console.log(displayedProducts);
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -42,7 +50,9 @@ export default function CategoryPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900">Category not found</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Category not found
+          </h2>
           <Link
             href="/categories"
             className="inline-block px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors duration-300"
@@ -59,7 +69,10 @@ export default function CategoryPage() {
       <div className="max-w-6xl mx-auto">
         {/* Breadcrumb */}
         <nav className="text-gray-500 mb-8 text-sm flex items-center gap-2">
-          <Link href="/categories" className="hover:text-teal-600 transition-colors duration-300">
+          <Link
+            href="/categories"
+            className="hover:text-teal-600 transition-colors duration-300"
+          >
             Categories
           </Link>
           <span>/</span>
@@ -67,27 +80,65 @@ export default function CategoryPage() {
         </nav>
 
         {/* Category Header */}
-        <div className="mb-16 text-center space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
-            {category.name}
-          </h1>
-          {category.description && (
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              {category.description}
-            </p>
+        <div className="mb-12  space-y-2">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+              {category.name}
+            </h1>
+            {category.description && (
+              <p className="text-lg text-gray-600  leading-relaxed mb-6">
+                {category.description}
+              </p>
+            )}
+          </div>
+          {category?.subcategories?.length > 0 ? (
+            <div className="flex flex-col gap-2">
+              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 tracking-tight">
+                Subcategories
+              </h1>
+              {/* SubCategory Filter */}
+              <div className="flex flex-wrap gap-4 ">
+                {category?.subcategories?.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() =>
+                      setSelectedSubCategory(
+                        selectedSubCategory?.id === cat.id ? null : cat
+                      )
+                    }
+                    className={`px-3 py-2 rounded-full flex items-center justify-center gap-2 font-semibold transition-all duration-300 ${
+                      selectedSubCategory?.id === cat.id
+                        ? "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg"
+                        : "bg-white border-2 border-gray-200 text-gray-700 hover:border-teal-600 hover:text-teal-600"
+                    }`}
+                  >
+                    <img
+                      className="w-10 h-10 rounded-full border border-gray-200 object-contain"
+                      src={cat.image}
+                      alt={cat.name}
+                    ></img>
+                    <span> {cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            ""
           )}
         </div>
 
         {/* Featured Products */}
         <section>
           <div className="flex items-center justify-between mb-12">
-            <h2 className="text-2xl font-bold text-gray-900">Featured Products</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Featured Products
+            </h2>
             <div className="w-16 h-0.5 bg-gradient-to-r from-teal-600 to-emerald-600"></div>
           </div>
 
-          {category.products && category.products.length > 0 ? (
+          {displayedProducts && displayedProducts.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-              {category.products.map((p) => (
+              {displayedProducts?.map((p) => (
                 <Link
                   key={p.id}
                   href={`/products/${p.id}`}
@@ -120,7 +171,9 @@ export default function CategoryPage() {
             </div>
           ) : (
             <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-gray-100">
-              <p className="text-gray-500 text-lg">No products available in this category</p>
+              <p className="text-gray-500 text-lg">
+                No products available in this category
+              </p>
               <Link
                 href="/categories"
                 className="inline-block mt-4 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors duration-300"
