@@ -34,7 +34,21 @@ export default function AddProductPage() {
   useEffect(() => {
     fetch(`${apiUrl}/categories/`)
       .then((res) => res.json())
-      .then((data) => setCategories(data))
+      .then((data) => {
+        const options = [];
+        data.forEach((cat) => {
+          // Top-level category
+          options.push({ id: cat.id, name: cat.name, level: 0 });
+
+          // Subcategories
+          if (cat.subcategories && cat.subcategories.length > 0) {
+            cat.subcategories.forEach((sub) => {
+              options.push({ id: sub.id, name: sub.name, level: 1 });
+            });
+          }
+        });
+        setCategories(options);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -161,10 +175,10 @@ export default function AddProductPage() {
                     className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 bg-white"
                     required
                   >
-                    <option value="">Select Category</option>
+                    <option value="">Select Category / Subcategory</option>
                     {categories.map((cat) => (
                       <option key={cat.id} value={cat.id}>
-                        {cat.name}
+                        {cat.level === 0 ? cat.name : "— " + cat.name}
                       </option>
                     ))}
                   </select>
@@ -204,7 +218,8 @@ export default function AddProductPage() {
                 {/* Meta Description */}
                 <div className="flex flex-col gap-2">
                   <label className="font-semibold text-gray-900">
-                    Meta Description <span className="text-gray-500">(Optional)</span>
+                    Meta Description{" "}
+                    <span className="text-gray-500">(Optional)</span>
                   </label>
                   <textarea
                     name="meta_description"
@@ -218,7 +233,8 @@ export default function AddProductPage() {
                 {/* Image */}
                 <div className="flex flex-col gap-2">
                   <label className="font-semibold text-gray-900">
-                    Product Image <span className="text-gray-500">(Optional)</span>
+                    Product Image{" "}
+                    <span className="text-gray-500">(Optional)</span>
                   </label>
                   <input
                     type="file"
@@ -241,7 +257,9 @@ export default function AddProductPage() {
                     ) : (
                       <div className="text-center">
                         <p className="text-sm">Click to browse image</p>
-                        <p className="text-xs text-gray-400 mt-1">Recommended: 800x800px</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Recommended: 800x800px
+                        </p>
                       </div>
                     )}
                   </div>
@@ -286,4 +304,3 @@ export default function AddProductPage() {
     </div>
   );
 }
-
