@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 
-export default function AddCategory({ setIsCategoryModelOpen }) {
+export default function AddSubCategory({ setIsSubCategoryModelOpen }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [categories, setCategories] = useState([]);
   const [preview, setPreview] = useState(null);
@@ -11,6 +11,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
     name: "",
     description: "",
     image: null,
+    parent: "", //optional
   });
 
   useEffect(() => {
@@ -45,6 +46,8 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
     formData.append("name", newCategory.name);
     formData.append("description", newCategory.description);
     if (newCategory.image) formData.append("image", newCategory.image);
+    if (newCategory.parent)
+      formData.append("parent", parseInt(newCategory.parent, 10));
 
     try {
       const res = await fetch(`${apiUrl}/categories/add/`, {
@@ -53,16 +56,16 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
       });
 
       if (res.ok) {
-        toast.success("Category added successfully!");
-        setIsCategoryModelOpen(false);
+        toast.success("sub Category added successfully!");
+        setIsSubCategoryModelOpen(false);
         setNewCategory({ name: "", description: "", image: null });
         setPreview(null);
       } else {
-        toast.error("Failed to add category.");
+        toast.error("Failed to add sub category.");
       }
     } catch (err) {
       console.log(err);
-      toast.error("Error adding category.");
+      toast.error("Error adding sub category.");
     }
   };
 
@@ -71,7 +74,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-gray-100 relative">
         {/* Close Button */}
         <button
-          onClick={() => setIsCategoryModelOpen(false)}
+          onClick={() => setIsSubCategoryModelOpen(false)}
           className="absolute top-4 right-4 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors duration-300"
         >
           <X className="w-5 h-5" />
@@ -79,7 +82,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
 
         <div className="p-8">
           <h2 className="text-2xl font-bold mb-6 text-gray-900">
-            Add New Category
+            Add New sub Category
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -91,7 +94,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
               <input
                 type="text"
                 name="name"
-                placeholder="Category name"
+                placeholder="sub Category name"
                 value={newCategory.name}
                 onChange={handleChange}
                 className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
@@ -104,12 +107,33 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
               <label className="font-semibold text-gray-900">Description</label>
               <textarea
                 name="description"
-                placeholder="Category description"
+                placeholder="sub Category description"
                 value={newCategory.description}
                 onChange={handleChange}
                 rows={3}
                 className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
               />
+            </div>
+
+            {/* Parent Category */}
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold text-gray-900">
+                Parent Category
+              </label>
+              <select
+                required
+                name="parent"
+                value={newCategory.parent}
+                onChange={handleChange}
+                className="border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+              >
+                <option value="">Select a main category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Image Upload with Preview */}
@@ -138,7 +162,7 @@ export default function AddCategory({ setIsCategoryModelOpen }) {
             <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => setIsCategoryModelOpen(false)}
+                onClick={() => setIsSubCategoryModelOpen(false)}
                 className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300 font-semibold"
               >
                 Cancel

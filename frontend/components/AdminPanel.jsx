@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Trash2, Edit, Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AddCategory from "./AddCategoryModel";
+import AddSubCategory from "./AddSubCategoryModel";
 
 export default function AdminPanel() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -11,6 +12,7 @@ export default function AdminPanel() {
   const [products, setProducts] = useState([]);
   const [deleteModel, setDeleteModel] = useState(null);
   const [isCategoryModelOpen, setIsCategoryModelOpen] = useState(false);
+  const [isSubCategoryModelOpen, setIsSubCategoryModelOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -88,6 +90,13 @@ export default function AdminPanel() {
             >
               <Plus className="w-5 h-5" />
               Add Category
+            </button>
+            <button
+              onClick={() => setIsSubCategoryModelOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-full hover:border-teal-600 hover:bg-teal-50 text-gray-700 hover:text-teal-700 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              <Plus className="w-5 h-5" />
+              Add Subcategory
             </button>
             <button
               onClick={() => router.push("/admin/products/new")}
@@ -256,6 +265,12 @@ export default function AdminPanel() {
         {/* Add Category Modal */}
         {isCategoryModelOpen && (
           <AddCategory setIsCategoryModelOpen={setIsCategoryModelOpen} />
+        )}
+        {/* Add subCategory Modal */}
+        {isSubCategoryModelOpen && (
+          <AddSubCategory
+            setIsSubCategoryModelOpen={setIsSubCategoryModelOpen}
+          />
         )}
       </div>
     </div>
