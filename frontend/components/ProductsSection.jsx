@@ -2,67 +2,88 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const myLoader = ({ src }) => src;
 
 export default function ProductsSection({ products }) {
   return (
-    <section className="py-20 px-4 bg-white" id="products">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Explore Popular Products
+    <section className="py-32 bg-white" id="products">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-20">
+          <h2 className="text-4xl font-semibold text-gray-900 tracking-tight mb-3">
+            Popular Products
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-emerald-600 mx-auto rounded-full"></div>
+          <p className="text-gray-600 text-lg font-light">
+            Discover our most sought-after tools and materials
+          </p>
         </div>
 
+        {/* Products Grid */}
         {products?.length > 0 ? (
-          <div className="grid md:grid-cols-3 gap-8">
-            {products?.slice(0, 3).map((product) => (
-              <div
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products?.slice(0, 4).map((product) => (
+              <Link
                 key={product.id}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 transform hover:-translate-y-2 flex flex-col"
+                href={`/products/${product.id}`}
+                className="group"
               >
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-40 w-full flex items-center justify-center overflow-hidden relative">
+                <div className="aspect-square bg-gray-50 rounded-lg mb-4 overflow-hidden border border-gray-200/50 group-hover:border-gray-300 transition-colors duration-200">
                   {product.image ? (
                     <Image
                       loader={myLoader}
                       src={product.image}
                       alt={product.name}
-                      className="object-contain rounded-lg group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-contain p-6 group-hover:scale-[1.02] transition-transform duration-300"
                       width={400}
                       height={400}
                       unoptimized
                     />
                   ) : (
-                    <span className="text-gray-500">No image</span>
+                    <div className="flex h-full items-center justify-center text-gray-400">
+                      <span className="text-sm">No image</span>
+                    </div>
                   )}
                 </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-bold text-xl mb-2 text-gray-900 group-hover:text-teal-700 transition-colors duration-300">
+
+                <div className="space-y-2">
+                  <h3 className="text-base font-medium text-gray-900 line-clamp-1 group-hover:text-[#FF6D1F] transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1">
+                  <p className="text-sm text-gray-500 line-clamp-2 font-light leading-relaxed">
                     {product.description}
                   </p>
-                  <Link
-                    href={`/products/${product.id}`}
-                    className="text-teal-600 font-semibold text-sm mt-auto inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-300"
-                  >
-                    View Details
-                    <span className="text-lg">→</span>
-                  </Link>
+                  <p className="text-base font-semibold text-gray-900 pt-1">
+                    {product.price ? (
+                      <>${product.price.toLocaleString()}</>
+                    ) : (
+                      <span className="text-gray-500 font-normal">Contact for price</span>
+                    )}
+                  </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center text-lg text-gray-500 py-16">
-            <span>No products available</span>
+          <div className="flex flex-col items-center justify-center py-32 text-center">
+            <p className="text-gray-500 text-lg">
+              No products available at the moment
+            </p>
           </div>
         )}
+
+        {/* View All Link */}
+        <div className="mt-16 text-center">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#FF6D1F] transition-colors"
+          >
+            View all products
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </section>
   );
 }
-

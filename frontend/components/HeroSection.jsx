@@ -2,47 +2,96 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import {
+  MapPin,
+  Ruler,
+  Truck,
+  CreditCard,
+  RotateCcw,
+  Clock,
+  DollarSign,
+} from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-20 px-4 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Text Content */}
-          <div className="flex-1 space-y-6 animate-fade-in-up">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-gray-900">
-                Your All-in-One Building Supply Destination
+    <>
+      {/* Hero Section */}
+      <section className="relative bg-linear-to-br from-orange-50/30 via-white to-gray-50/30 overflow-hidden py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Text Content */}
+            <div className="max-w-2xl">
+              {/* Main Title */}
+              <h1 className="text-4xl font-bold mb-5 tracking-tight leading-tight">
+                All Renovation{" "}
+                <span className="bg-linear-to-r from-[#FF6D1F] to-orange-500 bg-clip-text text-transparent">
+                  and Construction Materials
+                </span>{" "}
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed">
-                Everything you need—paint, hardware, tools, plumbing, electrical,
-                flooring, and more—all under one roof.
-              </p>
+
+              {/* Store Information */}
+              <div className="space-y-2.5 mb-8">
+                <div className="flex items-center gap-2.5 text-gray-700">
+                  <MapPin className="w-4 h-4 text-[#FF6D1F] flex-shrink-0" />
+                  <span className="text-sm">
+                    Kennedy & McNicoll, Scarborough
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2.5 text-gray-700">
+                  <Ruler className="w-4 h-4 text-[#FF6D1F] flex-shrink-0" />
+                  <span className="text-sm">
+                    50,000 sq ft indoor shopping • 3 acres
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2.5 text-gray-700">
+                  <Truck className="w-4 h-4 text-[#FF6D1F] flex-shrink-0" />
+                  <span className="text-sm">Delivery service available</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 text-gray-700">
+                  <CreditCard className="w-4 h-4 text-[#FF6D1F] flex-shrink-0" />
+                  <span className="text-sm">
+                    Debit, Credit, Cash, E-Transfer
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/categories"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-gradient-to-r from-[#FF6D1F] to-orange-500 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  Shop Categories
+                </Link>
+                <Link
+                  href="/products"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-gray-900 bg-white rounded-full hover:bg-gray-50 transition-all duration-300 border-2 border-gray-200 hover:border-[#FF6D1F]"
+                >
+                  View Products
+                </Link>
+              </div>
             </div>
-            <Link
-              href="/categories"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-full hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Explore Categories
-            </Link>
-          </div>
-          {/* Image */}
-          <div className="flex-1 flex items-center justify-center animate-fade-in">
-            <div className="relative w-full max-w-lg">
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-200/20 to-emerald-200/20 rounded-full blur-3xl"></div>
-              <Image
-                src="/hero.png"
-                alt="Building supplies hero"
-                className="relative object-contain drop-shadow-2xl"
-                width={800}
-                height={800}
-                priority
-              />
+
+            {/* Image Content */}
+            <div className="relative lg:h-[300px] w-full">
+              <div>
+                <div className="rounded-2xl">
+                  <Image
+                    src="/hero.jpg"
+                    alt="Construction and renovation materials store interior"
+                    width={1000}
+                    height={700}
+                    className="object-cover w-full hover:scale-105 transition-transform duration-700 rounded-2xl"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
-

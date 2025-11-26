@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={` bg-white text-black min-h-screen ${dmSans.className}`}>
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main className="max-w-6xl mx-auto">{children}</main>
         <Footer />
         <Toaster richColors position="top-center"></Toaster>
       </body>

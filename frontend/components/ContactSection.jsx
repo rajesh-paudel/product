@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { Phone, MapPin, ArrowRight } from "lucide-react";
 
 export default function ContactSection() {
   const [form, setForm] = useState({
@@ -49,108 +50,103 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50" id="contact">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Get In Touch
+    <section className="py-32 bg-white" id="contact">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-semibold tracking-tight text-gray-900 mb-3">
+            Get a Quote
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-emerald-600 mx-auto rounded-full"></div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have a question or need assistance? We're here to help.
+          <p className="text-gray-600 text-lg font-light">
+            Tell us what you need, and we'll provide a custom quote within 24 hours
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Contact Details */}
-          <div className="space-y-8">
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-              <h3 className="text-2xl font-bold mb-6 text-gray-900">
-                Contact Details
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <span className="text-teal-600 text-xl">📍</span>
-                  <div>
-                    <p className="font-semibold text-gray-900">Address</p>
-                    <p className="text-gray-600">200 Tokha Road, Baniyatar KTM</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-teal-600 text-xl">📞</span>
-                  <div>
-                    <p className="font-semibold text-gray-900">Phone</p>
-                    <p className="text-gray-600">(977) 98432215</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-teal-600 text-xl">🕐</span>
-                  <div>
-                    <p className="font-semibold text-gray-900">Business Hours</p>
-                    <p className="text-gray-600">Monday – Friday 9 AM – 6 PM</p>
-                  </div>
-                </div>
+        {/* Form */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 mb-12">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label
+                  htmlFor="name"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FF6D1F] focus:border-[#FF6D1F] transition-all placeholder:text-gray-400"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FF6D1F] focus:border-[#FF6D1F] transition-all placeholder:text-gray-400"
+                  placeholder="john@example.com"
+                  required
+                />
               </div>
             </div>
-
-            {/* Map Placeholder */}
-            <div className="bg-gray-100 rounded-2xl h-64 flex items-center justify-center overflow-hidden border border-gray-200">
-              <span className="text-gray-400 text-sm">Map</span>
+            <div className="space-y-2">
+              <label
+                htmlFor="message"
+                className="text-sm font-medium text-gray-700"
+              >
+                Project Details
+              </label>
+              <textarea
+                name="message"
+                id="message"
+                value={form.message}
+                onChange={handleChange}
+                rows={5}
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#FF6D1F] focus:border-[#FF6D1F] transition-all resize-none placeholder:text-gray-400"
+                placeholder="List the items you need..."
+                required
+              />
             </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#FF6D1F] text-white font-medium py-3.5 rounded-lg hover:bg-[#e55c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                "Sending..."
+              ) : (
+                <>
+                  Request Quote
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Contact Details */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 pt-8 border-t border-gray-200">
+          <div className="flex items-center gap-2.5 text-gray-600">
+            <Phone className="w-4 h-4 text-[#FF6D1F]" />
+            <span className="text-sm">416-291-3866</span>
           </div>
-
-          {/* Contact Form */}
-          <div className="relative">
-            {/* Decorative Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl transform rotate-1 opacity-50"></div>
-            
-            {/* Form */}
-            <div className="relative transform -rotate-1">
-              <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Request a Quote
-                  </h2>
-                  <p className="text-gray-600">
-                    Get detailed pricing & availability
-                  </p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your Email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
-                  />
-                  <textarea
-                    name="message"
-                    placeholder="Message / Product Inquiry"
-                    value={form.message}
-                    onChange={handleChange}
-                    rows={5}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold py-3 rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {loading ? "Sending..." : "Send Message"}
-                  </button>
-                </form>
-              </div>
-            </div>
+          <div className="flex items-center gap-2.5 text-gray-600">
+            <MapPin className="w-4 h-4 text-[#FF6D1F]" />
+            <span className="text-sm">2981 Kennedy Rd, Scarborough</span>
           </div>
         </div>
       </div>

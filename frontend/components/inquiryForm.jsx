@@ -51,11 +51,11 @@ export default function InquiryForm({ productId }) {
 
   return (
     <div className="sticky top-24">
-      <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-sm p-8 space-y-6 border border-gray-200">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-full flex items-center justify-center">
-            <MessageCircle className="w-6 h-6 text-teal-600" />
+          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+            <MessageCircle className="w-6 h-6 text-gray-900" />
           </div>
           <div>
             <h2 className="font-bold text-xl text-gray-900">Request a Quote</h2>
@@ -71,7 +71,7 @@ export default function InquiryForm({ productId }) {
             placeholder="Your Name"
             value={form.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 bg-gray-50/50"
           />
           <input
             type="email"
@@ -79,7 +79,7 @@ export default function InquiryForm({ productId }) {
             placeholder="Your Email"
             value={form.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 bg-gray-50/50"
           />
 
           <textarea
@@ -88,12 +88,12 @@ export default function InquiryForm({ productId }) {
             value={form.message}
             onChange={handleChange}
             rows={5}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300 resize-none"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 resize-none bg-gray-50/50"
           />
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold py-3 rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gray-900 text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Sending..." : "Send Inquiry"}
           </button>

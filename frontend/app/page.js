@@ -6,6 +6,7 @@ import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import CategoriesSection from "@/components/CategoriesSection";
 import ProductsSection from "@/components/ProductsSection";
 import ContactSection from "@/components/ContactSection";
+import FeaturedCategories from "@/components/FeaturedCategories";
 
 export default function page() {
   const [categories, setCategories] = useState([]);
@@ -28,11 +29,12 @@ export default function page() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-white">
       <HeroSection />
-      <WhyChooseUsSection />
+      <FeaturedCategories />
       <CategoriesSection categories={categories} />
       <ProductsSection products={products} />
+      <WhyChooseUsSection />
       <ContactSection />
     </div>
   );

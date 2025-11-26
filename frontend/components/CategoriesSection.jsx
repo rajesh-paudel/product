@@ -1,45 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight, Search } from "lucide-react";
 
 export default function CategoriesSection({ categories }) {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white" id="category">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
+    <section className="py-24 " id="category">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 text-center max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 tracking-tight sm:text-4xl mb-4">
             Browse by Category
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-emerald-600 mx-auto rounded-full"></div>
+          <p className="text-lg text-gray-500 font-light">
+            Find exactly what you need for your next project from our wide
+            selection.
+          </p>
         </div>
 
         {categories?.length > 0 ? (
           <>
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {categories?.slice(0, 3).map((cat) => (
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.id}`}
-                  className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 transform hover:-translate-y-2"
+                  className="group relative bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-500 aspect-[4/3] flex flex-col border border-gray-100 hover:border-[#FF6D1F]/20"
                 >
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-64 w-full flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white opacity-50" />
+
+                  <div className="relative h-full w-full p-10 flex items-center justify-center">
                     {cat.image ? (
                       <img
                         src={cat.image}
                         alt={cat.name}
-                        className="h-full w-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-700 ease-out drop-shadow-sm"
                       />
                     ) : (
-                      <span className="text-gray-400 text-lg">No image</span>
+                      <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center">
+                        <span className="text-gray-300 text-2xl">📷</span>
+                      </div>
                     )}
                   </div>
-                  <div className="p-6 space-y-2">
-                    <h3 className="font-bold text-xl text-gray-900 group-hover:text-teal-700 transition-colors duration-300">
-                      {cat.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">
-                      {cat.description}
-                    </p>
+
+                  <div className="relative p-6 bg-white/80 backdrop-blur-md mt-auto border-t border-gray-50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#FF6D1F] transition-colors">
+                          {cat.name}
+                        </h3>
+                        {cat.description && (
+                          <p className="text-gray-500 text-sm line-clamp-1 mt-1">
+                            {cat.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#FF6D1F] group-hover:text-white transition-all duration-300">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -50,7 +68,7 @@ export default function CategoriesSection({ categories }) {
               <div className="text-center">
                 <Link
                   href="/categories"
-                  className="inline-block px-8 py-4 bg-white border-2 border-teal-600 text-teal-600 font-semibold rounded-full hover:bg-teal-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#FF6D1F] rounded-full hover:bg-[#e55c15] transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/20"
                 >
                   View All Categories
                 </Link>
@@ -58,12 +76,16 @@ export default function CategoriesSection({ categories }) {
             )}
           </>
         ) : (
-          <div className="flex items-center justify-center text-lg text-gray-500 py-16">
-            <span>No category available</span>
+          <div className="flex flex-col items-center justify-center py-24 text-center bg-white rounded-[2rem] border border-gray-100">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+              <Search className="w-8 h-8 text-gray-300" />
+            </div>
+            <p className="text-lg text-gray-500">
+              No categories available at the moment.
+            </p>
           </div>
         )}
       </div>
     </section>
   );
 }
-

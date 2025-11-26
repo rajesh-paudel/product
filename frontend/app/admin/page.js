@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import AdminPanel from "@/components/AdminPanel";
 import { toast } from "sonner";
+import { Lock } from "lucide-react";
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,9 +18,9 @@ export default function AdminPage() {
     if (form.username === "admin" && form.password === "admin") {
       setIsLoggedIn(true);
       localStorage.setItem("admin_login", "true");
-      toast.success("Logged in successfully");
+      toast.success("Welcome back");
     } else {
-      toast.error("Invalid username or password");
+      toast.error("Invalid credentials");
     }
   };
 
@@ -31,27 +32,34 @@ export default function AdminPage() {
   if (isLoggedIn) return <AdminPanel />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center py-20 px-4">
-      <div className="w-full max-w-md">
-        {/* Decorative Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-50/50 to-emerald-50/50"></div>
-
+    <div className="min-h-screen  flex items-center justify-center py-20 px-4">
+      <div className="w-full max-w-[400px]">
         {/* Login Form Card */}
-        <div className="relative bg-white shadow-2xl rounded-2xl p-8 space-y-6 border border-gray-100">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Admin Login
+        <div className="bg-white  relative overflow-hidden">
+          {/* Decorative top accent */}
+          <div className="absolute top-0 left-0 w-full h-1.5"></div>
+
+          <div className="text-center mb-10">
+            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-orange-100 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+              <img
+                src="/Global_LOGO_200.jpg"
+                alt="Logo"
+                className="h-10 w-10 object-contain"
+              />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight mb-2">
+              Welcome Back
             </h2>
-            <p className="text-gray-600">
-              Enter your credentials to manage products
+            <p className="text-gray-500 text-sm">
+              Sign in to manage your inventory
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
-            <div>
+            <div className="space-y-1.5">
               <label
                 htmlFor="username"
-                className="block text-sm font-semibold text-gray-900 mb-2"
+                className="block text-xs font-semibold text-gray-700 uppercase tracking-wider ml-1"
               >
                 Username
               </label>
@@ -62,16 +70,16 @@ export default function AdminPage() {
                 value={form.username}
                 onChange={handleChange}
                 placeholder="Enter username"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-[#FF6D1F]/10 focus:border-[#FF6D1F] transition-all placeholder:text-gray-400"
                 required
                 autoFocus
               />
             </div>
 
-            <div>
+            <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-gray-900 mb-2"
+                className="block text-xs font-semibold text-gray-700 uppercase tracking-wider ml-1"
               >
                 Password
               </label>
@@ -82,25 +90,29 @@ export default function AdminPage() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="Enter password"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-[#FF6D1F]/10 focus:border-[#FF6D1F] transition-all placeholder:text-gray-400"
                 required
               />
             </div>
 
             {error && (
-              <p className="text-red-600 text-sm text-center font-medium bg-red-50 p-3 rounded-lg border border-red-200">
+              <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-xs font-medium text-center">
                 {error}
-              </p>
+              </div>
             )}
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white py-3 rounded-lg font-semibold hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl mt-4"
+              className="w-full bg-[#FF6D1F] text-white py-3.5 rounded-xl font-medium hover:bg-[#e55c15] transition-all duration-300 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 active:scale-[0.98] mt-2"
             >
-              Login
+              Sign In
             </button>
           </form>
         </div>
+
+        <p className="text-center text-xs text-gray-400 mt-8">
+          &copy; {new Date().getFullYear()} Global Building Supplies.
+        </p>
       </div>
     </div>
   );
