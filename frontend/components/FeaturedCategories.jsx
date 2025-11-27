@@ -67,7 +67,7 @@ export default function FeaturedCategories() {
       name: "Flooring",
       subcategories: ["Tiles", "Laminate", "Hardwood", "Vinyl"],
       icon: <Layers className="w-6 h-6" />,
-      color: "bg-emerald-50 text-emerald-600",
+      color: "bg-stone-50 text-stone-600",
     },
   ];
 

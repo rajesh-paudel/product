@@ -7,6 +7,9 @@ import CategoriesSection from "@/components/CategoriesSection";
 import ProductsSection from "@/components/ProductsSection";
 import ContactSection from "@/components/ContactSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
+import ServiceCards from "@/components/ServiceCards";
+import ProductCategoriesShowcase from "@/components/ProductCategoriesShowcase";
+import StoreInfoSection from "@/components/StoreInfoSection";
 
 export default function page() {
   const [categories, setCategories] = useState([]);
@@ -31,6 +34,9 @@ export default function page() {
   return (
     <div className="min-h-screen bg-white">
       <HeroSection />
+      <ServiceCards />
+      <StoreInfoSection />
+      <ProductCategoriesShowcase />
       <FeaturedCategories />
       <CategoriesSection categories={categories} />
       <ProductsSection products={products} />
